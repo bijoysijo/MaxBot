@@ -1,16 +1,26 @@
 import discord
+from discord.ext import commands
+from discord.utils import get
 import os
 from dotenv import load_dotenv
 
 # load env variables from .env file
 load_dotenv()
 
-class MyClient(discord.Client):
-  async def on_ready(self):
-    print('Logged in as {0}!'.format(self.user))
+# set required discord intents
+intents = discord.Intents.all()
+intents.reactions = True
 
-  async def on_message(self, message):
-    print('Message from {0.author}: {0.content}'.format(message))
+bot = commands.Bot(command_prefix='!', intents=intents)
 
-client = MyClient()
-client.run(os.getenv('TOKEN', 'Token not found'))
+#intializer event
+@bot.event
+async def on_ready():
+  print('We have logged in as {0.user}'.format(bot))
+
+@bot.event
+async def on_member_join(member):
+  channel = bot.get_channel(782892132959518732)
+  await channel.send(f"Heya! {member.name}, Welcome to {member.guild.name}.")
+
+bot.run(os.getenv('TOKEN', 'Token not found'))
