@@ -31,4 +31,39 @@ async def on_raw_reaction_add(payload):
   message_author = message.author
   await channel.send(f"{payload.member} just reacted to a message from {message_author}")
 
+@bot.command()
+async def role(ctx, arg):
+  all_roles = await ctx.guild.fetch_roles()
+  print(all_roles)
+  user = ctx.message.author
+  role = get(user.guild.roles)
+  print(role)
+  if arg in all_roles:
+    await user.add_roles(new_role)
+    await ctx.send(f"{arg} role assigned to {user}.")
+  else:
+    new_role = await ctx.guild.create_role(name=arg)
+    await user.add_roles(new_role)
+    await ctx.send(f"{arg} role created and assigned to {user}.")
+
+# async def role(ctx, arg):
+#   print('Start')
+#   roles = await ctx.guild.fetch_roles()
+#   if arg not in roles:
+#       await ctx.guild.create_role(name=arg)
+#   member = ctx.message.author
+#   role = get(member.guild.roles, name=arg)
+#   await member.add_roles(role)
+#   print('Done')
+  # get all server roles.
+  # check if arg role already exists.
+  # if not create arg role.
+
+
+
+
+
+# This is my dashing start to 2022! Here I come fuckers.
+
+
 bot.run(os.getenv('TOKEN', 'Token not found'))
